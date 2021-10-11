@@ -3,3 +3,51 @@ Using default tag: latest
 error during connect: In the default daemon configuration on Windows, the docker client must be run with elevated privileges to connect.: Post "http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.24/images/create?fromImage=swaggerapi%2Fswagger-ui&tag=latest": open //./pipe/docker_engine: The system cannot find the file specified.
 docker: error during connect: In the default daemon configuration on Windows, the docker client must be run with elevated privileges to connect.: Post "http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.24/containers/create": open //./pipe/docker_engine: The system cannot find the file specified.
 See 'docker run --help'.
+
+[
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "660b3398-b80e-49d2-bc5b-ac1dc93b5254",
+    "id": "3e42d11f-d64d-4173-af9b-12ecaa1030b3",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "Udacity CloudLabs Sub - 10",
+    "state": "Enabled",
+    "tenantId": "660b3398-b80e-49d2-bc5b-ac1dc93b5254",
+    "user": {
+      "name": "odl_user_160661@udacitylabs.onmicrosoft.com",
+      "type": "user"
+    }
+  }
+]
+Registering model demo-model
+{
+  "cpu": "",
+  "createdTime": "2021-10-11T08:38:53.199442+00:00",
+  "description": "",
+  "experimentName": "",
+  "framework": "Custom",
+  "frameworkVersion": null,
+  "gpu": "",
+  "id": "demo-model:1",
+  "memoryInGB": "",
+  "name": "demo-model",
+  "properties": "",
+  "runId": "",
+  "sampleInputDatasetId": "",
+  "sampleOutputDatasetId": "",
+  "tags": "",
+  "version": 1
+}
+Failed to check LocalWebservice existence: WebserviceException:
+        Message: Failed to create Docker client. Is Docker running/installed?
+When you deploy locally, we download a dockerfile
+execute docker build on it, and docker run the built container for you
+Error: Error while fetching server API version: 500 Server Error: Internal Server Error ("b'open \\\\.\\pipe\\docker_engine_linux: The system cannot find the file specified.'")
+        InnerException None
+        ErrorResponse
+{
+    "error": {
+        "message": "Failed to create Docker client. Is Docker running/installed?\nWhen you deploy locally, we download a dockerfile\nexecute docker build on it, and docker run the built container for you\nError: Error while fetching server API version: 500 Server Error: Internal Server Error (\"b'open \\\\\\\\.\\\\pipe\\\\docker_engine_linux: The system cannot find the file specified.'\")"
+    }
+}
