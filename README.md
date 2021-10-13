@@ -40,6 +40,43 @@ The same can be done via the SDK using the `AMLCompute` and `ComputeTarget`libra
                                                            
 `compute_target = ComputeTarget.create(ws, 'ml-cluster', compute_config)`
 #### Configure the Automated ML Run
+I created a new AutomatedML run in the Machine Learning Studio
+
+<img width="501" alt="Screenshot 2021-10-13 143951" src="https://user-images.githubusercontent.com/92030321/137181103-483f9528-ed50-471d-96e5-4bb047547f1c.png">
+ 
+I selected the registered dataset "BankMarketing Dataset"
+<img width="643" alt="Screenshot 2021-10-13 144023" src="https://user-images.githubusercontent.com/92030321/137181207-099259ee-1e2b-4722-8b20-04198e962a88.png">
+
+The experiment is called "ml-experiment-1", it runs on the "ml-cluster" und the target column in my dataset is "y".
+The primary metric for my models is accuracy. I configured a 3-fold cross validation on the data and set the concurrent iterations to 5 (less than maximum number of nodes in my cluster). The AutoML exits after 1h (to ensure completion before the VM times out). I set the task to a classification task without using DeepLearning. Additionally featurization is enabled. Since I did not preprocess and clean this data (unlike the first project), Azure Machine Learning Studio uses some standardised preprocessing methods to handle missing data and categorical columns.
+
+<img width="689" alt="Screenshot 2021-10-13 144141" src="https://user-images.githubusercontent.com/92030321/137181571-be77a2c6-9b36-46c8-99a9-e73f24f5142d.png">
+<img width="309" alt="Screenshot 2021-10-13 144345" src="https://user-images.githubusercontent.com/92030321/137181562-34d53cde-1029-400f-b994-86d0f87da4ec.png">
+<img width="557" alt="Screenshot 2021-10-13 144402" src="https://user-images.githubusercontent.com/92030321/137182680-93f99ae0-0ee2-4313-82aa-1c6d3af37c70.png">
+
+The same settings can be done via the SDK using
+```
+automl_settings = {
+    "experiment_timeout_minutes": 20,
+    "max_concurrent_iterations": 5,
+    "primary_metric" : 'accuracy',
+    "n_cross_validations" : 3
+}
+automl_config = AutoMLConfig(compute_target=compute_target, \n
+                             task = "classification",
+                             training_data=dataset,
+                             label_column_name="y",   
+                             path = project_folder,
+                             enable_early_stopping= True,
+                             featurization= 'auto',
+                             debug_log = "automl_errors.log",
+                             model_explainability = True,
+                             **automl_settings
+                            )
+ ```
+
+*Screenshot of completed experiment*
+<img width="873" alt="automated_ml_run_completed_2" src="https://user-images.githubusercontent.com/92030321/137180949-a466193c-b714-4ee2-9bb9-05df6e841cb2.png">
 
 #### Examine the result of the run
 
