@@ -6,6 +6,8 @@ This project is part of the Udacity Azure ML with Microsoft Azure Nanodegree. In
 *TODO*: Provide an architectual diagram of the project and give an introduction of each step. An architectural diagram is an image that helps visualize the flow of operations from start to finish. In this case, it has to be related to the completed project, with its various stages that are critical to the overall flow. For example, one stage for managing models could be "using Automated ML to determine the best model". 
 
 ## Key Steps
+### Authentication
+Since I used the provided Udacity Lab, I did not have the authorization to create a service principal. 
 ### Create an Automated ML Experiment
 #### Create the Dataset
 First I Have to register the dataset. I downloaded the dataset from the source and then used the machine learning studio interface to upload it.
@@ -24,11 +26,19 @@ After uploading the csv file and checking all the settings (delimiter, encoding,
 
 the dataset is registered in my workspace and can be found in registered datasets
 
-<img width="861" alt="registered_dataset" src="https://user-images.githubusercontent.com/92030321/137176265-22dc3255-3ff0-4d25-b34d-8dbc9b2530da.png">
-
+*Screenshot of "Registered Datasets"*
+<img width="861" alt="registered_dataset" src="https://user-images.githubusercontent.com/92030321/137176265-22dc3255-3ff0-4d25-b34d-8dbc9b2530da.png" caption="test_caption">
 
 #### Create a Compute cluster
+I used the compute section of the Machine Learning Studio to create a compute cluster with a `Standard_DS12_v2`virtual machine, 1 minimum node and 6 maximum nodes, with the name "ml-cluster". Here a screenshot from the azure.github highlighting showing, how to use the GUI to create a cluster https://azure.github.io/azureml-cheatsheets/assets/images/create-compute-df729776bb078467009fe6951c020baa.png
 
+The same can be done via the SDK using the `AMLCompute` and `ComputeTarget`library and configuring a cluster in my workspace `ws`
+
+`compute_config = AmlCompute.provisioning_configuration(vm_size='STANDARD_DS12_V2',
+                                                           min_nodes=1,
+                                                           max_nodes=6)`
+                                                           
+`compute_target = ComputeTarget.create(ws, 'ml-cluster', compute_config)`
 #### Configure the Automated ML Run
 
 #### Examine the result of the run
