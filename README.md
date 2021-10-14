@@ -1,6 +1,6 @@
 # Project 2: Operationalizing Machine Learning
 
-This project is part of the Udacity Azure ML with Microsoft Azure Nanodegree. In this project, I build an Azure ML run and trained a model on a dataset. I deployed the best model of the AutoML run and interacted with it. Finally I created and deployed a pipeline to train a model using the AutoML run.
+This project is part of the Udacity Azure ML with Microsoft Azure Nanodegree. In this project, I built an Azure ML run and trained a model on a dataset. I deployed the best model of the AutoML run and interacted with it. Finally I created and deployed a pipeline to train a model using the AutoML run.
 
 ## Architectural Diagram
 This is a graphical overview of the steps of this project: 
@@ -11,11 +11,11 @@ This is a graphical overview of the steps of this project:
 Since I used the provided Udacity Lab, I did not have the authorization to create a service principal. 
 ### Create an Automated ML Experiment
 #### Create the Dataset
-First I Have to register the dataset. I downloaded the dataset from the source and then used the machine learning studio interface to upload it.
+First I have to register the dataset. I downloaded the dataset from the source and then used the machine learning studio interface to upload it.
 
 <img width="300" alt="InkedScreenshot 2021-10-13 144507_LI" src="https://user-images.githubusercontent.com/92030321/137174303-6c75b9bb-f597-4655-8a8c-c2685e898870.jpg">
 
-I provide the name and the description of this dataset.
+I provided the name and the description of this dataset.
 I can use the same name in the jupyter notebook to retrieve the same registered dataset from my workspace `ws`:
 `dataset = ws.datasets["BankMarketing Dataset"]`
 
@@ -31,10 +31,9 @@ the dataset is registered in my workspace and can be found in registered dataset
 <img width="900" alt="registered_dataset" src="https://user-images.githubusercontent.com/92030321/137176265-22dc3255-3ff0-4d25-b34d-8dbc9b2530da.png" caption="test_caption">
 
 #### Create a Compute cluster
-I used the compute section of the Machine Learning Studio to create a compute cluster with a `Standard_DS12_v2`virtual machine, 1 minimum node and 6 maximum nodes, with the name "ml-cluster". Here a screenshot from the azure.github highlighting showing, how to use the GUI to create a cluster https://azure.github.io/azureml-cheatsheets/assets/images/create-compute-df729776bb078467009fe6951c020baa.png
+I used the compute section of the Machine Learning Studio to create a compute cluster with a `Standard_DS12_v2`virtual machine, 1 minimum node and 6 maximum nodes, with the name "ml-cluster". 
 
 The same can be done via the SDK using the `AMLCompute` and `ComputeTarget`library and configuring a cluster in my workspace `ws`
-
 `compute_config = AmlCompute.provisioning_configuration(vm_size='STANDARD_DS12_V2',
                                                            min_nodes=1,
                                                            max_nodes=6)`
@@ -50,7 +49,7 @@ I selected the registered dataset "BankMarketing Dataset"
 <img width="500" alt="Screenshot 2021-10-13 144023" src="https://user-images.githubusercontent.com/92030321/137181207-099259ee-1e2b-4722-8b20-04198e962a88.png">
 
 The experiment is called "ml-experiment-1", it runs on the "ml-cluster" und the target column in my dataset is "y".
-The primary metric for my models is accuracy. I configured a 3-fold cross validation on the data and set the concurrent iterations to 5 (less than maximum number of nodes in my cluster). The AutoML exits after 1h (to ensure completion before the VM times out). I set the task to a classification task without using DeepLearning. Additionally featurization is enabled. Since I did not preprocess and clean this data (unlike the first project), Azure Machine Learning Studio uses some standardised preprocessing methods to handle missing data and categorical columns.
+The primary metric for my models is accuracy. I configured a 3-fold cross validation on the data and set the concurrent iterations to 5 (less than maximum number of nodes in my cluster). The AutoML exits after 1h (to ensure completion before the VM times out). I set the task to a classification task without using DeepLearning. Additionally featurization is enabled - this means, Azure Machine Learning Studio uses some standardised preprocessing methods to handle missing data and categorical columns, since I did not preprocess and clean this data (unlike the first project).
 
 <img width="500" alt="Screenshot 2021-10-13 144141" src="https://user-images.githubusercontent.com/92030321/137181571-be77a2c6-9b36-46c8-99a9-e73f24f5142d.png">
 <img width="300" alt="Screenshot 2021-10-13 144345" src="https://user-images.githubusercontent.com/92030321/137181562-34d53cde-1029-400f-b994-86d0f87da4ec.png">
@@ -80,13 +79,13 @@ I deployed the model using the Machine Learning Studio on an Azure Container Ins
 <img width="500" alt="model_is_deployed" src="https://user-images.githubusercontent.com/92030321/137267499-012ab75f-e9e8-4168-8f76-06834627c16d.png">
 
 #### Enable Logging
-While deploying the model, I did not enable Application Insights. I will now switch on Application Insights and allow logging using the Python SDK.
-First I need a config.json from my workspace. I created one from my workspace variable `ws` using the jupyter notebook
+While deploying the model, I did not enable Application Insights. I enabled Application Insights and allowed logging using the Python SDK and the python script logs.py.
+First I needed a config.json from my workspace. I created one from my workspace variable `ws` using the jupyter notebook
 `ws.write_config(path="./", file_name="config.json")`, then downloaded the file to the same location of my python scripts.
 
-In logs.py I provided the name of my deployed model "automl-bankamrketing" and enabled the Application Insights of my service
+In logs.py I provided the name of my deployed model "automl-bankmarketing" and enabled the Application Insights of my service with 
 `service.update(enable_app_insights=True)`.
-After running logs.py with python in the terminal, I chekced in Machine Learning Studio and my endpoint had now the application insights enabled.
+After running logs.py with python in the terminal, I checked in Machine Learning Studio and my endpoint had now the application insights enabled.
 
 ***Screenshot application insights enabled***
 
@@ -113,7 +112,7 @@ I used port 9001 to run the swagger user interface with swagger.sh and then star
 To interact with the deployed endpoint, one can use the score method and provide an input of the shown format ({"data": [{...}]}).
 
 ### Consume Model Endpoint
-Using the information from swagger, I can prepare my endpoint.py script to interact with the deployed model using the python SDK.
+Using the information from swagger, I prepared my endpoint.py script to interact with the deployed model using the python SDK.
 In endpoint.py I provided the endpoint uri, to which my script addresses the request and an authentication key.
 
 <img width=300 alt="Screenshot 2021-10-13 160243" src="https://user-images.githubusercontent.com/92030321/137273692-192dfd1b-d6e0-42d2-91be-5d764c9ad66a.png">
@@ -135,7 +134,7 @@ In my benchmark run all 10 request where send succesfully and the endpoint react
 
 ### Create, Publish and Consume a ModelPipeline
 I used the provided jupyter notebook to create an AutoMl pipeline. Here I matched the names, so that most of the previous work is reused.
-I reused the previous created "ml-cluster", and also the already registered Bankmarketing dataset.
+I reused the "ml-cluster", and also the already registered Bankmarketing dataset.
 I configured the AutoML run in the SDK the same way, I did in the studio.
 
 ```
@@ -170,7 +169,7 @@ automl_config = AutoMLConfig(compute_target=compute_target, \n
     workspace=ws,    
     steps=[automl_step])
 ```
-I run the experiment and it completed succesfully.
+I ran the experiment and it completed succesfully.
 ```
 pipeline_run = experiment.submit(pipeline)
 ```
@@ -218,4 +217,4 @@ It shows
 - an successful API request to the deployed model (00:03:15)
 
 ## Future Work
-The model found by the AutoML run had the best accuracy of all models, but it was not very precise for this classification. The confusion matrix showed that the model could predict a negative outcome quite good, but a predicted positive outcome was only correct in 60% of cases. This is probably due to the imbalanced training dataset. The best course of action would be, to get a more balanced datset. But using only the existing dataset, for a future run the primary metric should be changed. Accuracy is misleading in this case. I suggest using the F1 score, since this gives a weighted average of precision and recall. Secondly on can try over-sampling the dataset to add more copies of the underrepresented class (in this case positive outcome).
+The model found by the AutoML run had the best accuracy of all models, but it was not very precise for this classification. The confusion matrix showed that the model could predict a negative outcome quite good, but a predicted positive outcome was only correct in 60% of cases. This is probably due to the imbalanced training dataset. The best course of action would be, to get a more balanced dataset. But using only the existing dataset, for a future run the primary metric should be changed. Accuracy is misleading in this case. I suggest using the F1 score, since this gives a weighted average of precision and recall. Secondly one can try over-sampling the dataset to add more copies of the underrepresented class (in this case positive outcome).
