@@ -209,5 +209,12 @@ print('Submitted pipeline run: ', run_id)
 ## Screen Recording
 A screencast can be found here:
 https://youtu.be/D3rcK4XAsR4
+
+It shows 
+- a working deployed ML model endpoint (timestamp 00:00:10)
+- the deployed pipeline (00:00:55)
+- the available ML model (00:02:13)
+- an succesful API request to the deployed model (00:03:15)
+
 ## Standout Suggestions
 *TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
