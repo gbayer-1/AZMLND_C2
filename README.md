@@ -4,33 +4,45 @@ This project is part of the Udacity Azure ML with Microsoft Azure Nanodegree. In
 
 ## Architectural Diagram
 This is a graphical overview of the steps of this project: 
+<div align='center'>
 <img width=900 alt="diagramm" src="https://user-images.githubusercontent.com/92030321/137319171-e0315c45-ca93-4f3b-abdd-2637c02d7290.png"> 
+</div>
 
 ## Key Steps
-### Authentication
+### 🔐 Authentication
+---
 Since I used the provided Udacity Lab, I did not have the authorization to create a service principal. 
-### Create an Automated ML Experiment
-#### Create the Dataset
+
+### 🧪 Create an Automated ML Experiment
+---
+#### 📊 Create the Dataset
+  
 First I have to register the dataset. I downloaded the dataset from the source and then used the machine learning studio interface to upload it.
 
+<div align='center'>
 <img width="300" alt="InkedScreenshot 2021-10-13 144507_LI" src="https://user-images.githubusercontent.com/92030321/137174303-6c75b9bb-f597-4655-8a8c-c2685e898870.jpg">
+</div>
 
 I provided the name and the description of this dataset.
 I can use the same name in the jupyter notebook to retrieve the same registered dataset from my workspace `ws`:
-`dataset = ws.datasets["BankMarketing Dataset"]`
+```dataset = ws.datasets["BankMarketing Dataset"]```
 
+<div align='center'>
 <img width="300" alt="Screenshot 2021-10-13 144613" src="https://user-images.githubusercontent.com/92030321/137174601-bdaccc2d-6e73-419c-907f-14589b63780f.png">
+</div>
 
 After uploading the csv file and checking all the settings (delimiter, encoding, etc.) ...
 
+<div align='center'>
 <img width="500" alt="Screenshot 2021-10-13 144720" src="https://user-images.githubusercontent.com/92030321/137175828-4154f9cf-66e0-4c90-a2b5-089cd247c783.png">
-
+</div>
+  
 the dataset is registered in my workspace and can be found in registered datasets
 
 ***Screenshot of "Registered Datasets"***
 <img width="900" alt="registered_dataset" src="https://user-images.githubusercontent.com/92030321/137176265-22dc3255-3ff0-4d25-b34d-8dbc9b2530da.png" caption="test_caption">
 
-#### Create a Compute cluster
+#### 💻 Create a Compute cluster
 I used the compute section of the Machine Learning Studio to create a compute cluster with a `Standard_DS12_v2`virtual machine, 1 minimum node and 6 maximum nodes, with the name "ml-cluster". 
 
 The same can be done via the SDK using the `AMLCompute` and `ComputeTarget`library and configuring a cluster in my workspace `ws`
@@ -39,7 +51,7 @@ The same can be done via the SDK using the `AMLCompute` and `ComputeTarget`libra
                                                            max_nodes=6)`
                                                            
 `compute_target = ComputeTarget.create(ws, 'ml-cluster', compute_config)`
-#### Configure the Automated ML Run
+#### ⚙️ Configure the Automated ML Run
 I created a new AutomatedML run in the Machine Learning Studio
 
 <img width="500" alt="Screenshot 2021-10-13 143951" src="https://user-images.githubusercontent.com/92030321/137181103-483f9528-ed50-471d-96e5-4bb047547f1c.png">
@@ -58,7 +70,7 @@ The primary metric for my models is accuracy. I configured a 3-fold cross valida
 ***Screenshot of completed experiment***
 <img width="900" alt="automated_ml_run_completed_2" src="https://user-images.githubusercontent.com/92030321/137180949-a466193c-b714-4ee2-9bb9-05df6e841cb2.png">
 
-#### Examine the result of the run
+#### 🔍 Examine the result of the run
 The best model of the AutoML run is a VotingEnsemble with an accuracy of 0.92. The Voting Ensemble consists of XGBoostClassifiers, LightGBM and Random Forest models with different weights.
 
 ***Screenshot of the best model***
@@ -68,7 +80,8 @@ Looking at the confusion matrix, it is apparent, that the model performs very po
 
 <img width="300" alt="Screenshot 2021-10-13 150553" src="https://user-images.githubusercontent.com/92030321/137265760-d791df38-107d-475f-a109-8285ececaafa.png">
 
-### Deploy the Best Model
+### 🚀 Deploy the Best Model
+---
 I deployed the model using the Machine Learning Studio on an Azure Container Instance with enabled authentification with the name "automl-bankmarketing".
 
 <img width="500" alt="Screenshot 2021-10-13 150641" src="https://user-images.githubusercontent.com/92030321/137267172-7a6cb074-c84b-4fb1-aeb4-f853d1aad498.png">
@@ -78,7 +91,7 @@ I deployed the model using the Machine Learning Studio on an Azure Container Ins
 
 <img width="500" alt="model_is_deployed" src="https://user-images.githubusercontent.com/92030321/137267499-012ab75f-e9e8-4168-8f76-06834627c16d.png">
 
-#### Enable Logging
+####  📝 Enable Logging
 While deploying the model, I did not enable Application Insights. I enabled Application Insights and allowed logging using the Python SDK and the python script logs.py.
 First I needed a config.json from my workspace. I created one from my workspace variable `ws` using the jupyter notebook
 `ws.write_config(path="./", file_name="config.json")`, then downloaded the file to the same location of my python scripts.
@@ -97,7 +110,7 @@ After the endpoint was again deployed and healthy, I used logs.py to get some lo
 
 <img width=600 alt="logs_output" src="https://user-images.githubusercontent.com/92030321/137314091-dc362f1d-0004-4ec3-b489-ffeba5381ec8.png">
 
-#### Swagger documentation
+#### 📓 Swagger documentation
 I downloaded the swagger.json file into the directory of my swagger.sh and serve.py files
 
 <img width=300 alt="Screenshot 2021-10-13 154351" src="https://user-images.githubusercontent.com/92030321/137271228-58534332-c2b8-4902-ab0d-df4793ca8a37.png">
@@ -111,7 +124,8 @@ I used port 9001 to run the swagger user interface with swagger.sh and then star
 
 To interact with the deployed endpoint, one can use the score method and provide an input of the shown format ({"data": [{...}]}).
 
-### Consume Model Endpoint
+### 👩‍💻 Consume Model Endpoint
+---
 Using the information from swagger, I prepared my endpoint.py script to interact with the deployed model using the python SDK.
 In endpoint.py I provided the endpoint uri, to which my script addresses the request and an authentication key.
 
@@ -123,7 +137,7 @@ I also rearranged the data input to match the example input of the swagger.json.
 
 <img width=300 alt="endpointpy_works" src="https://user-images.githubusercontent.com/92030321/137273897-39c272de-8ee7-4520-b3d1-84814c6a47c2.png">
 
-#### Benchmark
+#### 🎯 Benchmark
 endpoint.py also created a data.json, which I used to make a benchmark test using ApacheBench.
 
 ***Screenshot Apache Benchmark runs***
@@ -132,7 +146,8 @@ endpoint.py also created a data.json, which I used to make a benchmark test usin
 
 In my benchmark run all 10 request where send succesfully and the endpoint reaction time was 219ms (mean).
 
-### Create, Publish and Consume a ModelPipeline
+### ⛓️ Create, Publish and Consume a ModelPipeline
+---
 I used the provided jupyter notebook to create an AutoMl pipeline. Here I matched the names, so that most of the previous work is reused.
 I reused the "ml-cluster", and also the already registered Bankmarketing dataset.
 I configured the AutoML run in the SDK the same way, I did in the studio.
