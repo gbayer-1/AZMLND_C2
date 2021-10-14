@@ -140,7 +140,7 @@ I configured the AutoML run in the SDK the same way, I did in the studio.
 
 ```
 automl_settings = {
-    "experiment_timeout_minutes": 20,
+    "experiment_timeout_minutes": 60,
     "max_concurrent_iterations": 5,
     "primary_metric" : 'accuracy',
     "n_cross_validations" : 3
