@@ -217,5 +217,5 @@ It shows
 - the available ML model (00:02:13)
 - an successful API request to the deployed model (00:03:15)
 
-## Standout Suggestions
-*TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
+## Future Work
+The model found by the AutoML run had the best accuracy of all models, but it was not very precise for this classification. The confusion matrix showed that the model could predict a negative outcome quite good, but a predicted positive outcome was only correct in 60% of cases. This is probably due to the imbalanced training dataset. The best course of action would be, to get a more balanced datset. But using only the existing dataset, for a future run the primary metric should be changed. Accuracy is misleading in this case. I suggest using the F1 score, since this gives a weighted average of precision and recall. Secondly on can try over-sampling the dataset to add more copies of the underrepresented class (in this case positive outcome).
