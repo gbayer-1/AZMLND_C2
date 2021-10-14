@@ -138,6 +138,11 @@ I also rearranged the data input to match the example input of the swagger.json.
 ![endpointpy_works](https://user-images.githubusercontent.com/92030321/137273897-39c272de-8ee7-4520-b3d1-84814c6a47c2.png)
 
 #### Benchmark
+endpoint.py also created a data.json, which I used to make a benchmark test using ApacheBench.
+
+![benchmark_runs](https://user-images.githubusercontent.com/92030321/137274364-a30f78e3-5ae2-4da5-a497-a2f5dc4322a6.png)
+
+In my benchmark run all 10 request where send succesfully and the endpoint reaction time was 219ms (mean).
 ### Create, Publish and Consume a ModelPipeline
 *TODO*: Write a short discription of the key steps. Remeber to include all the screenshots required to demonstrate key steps. 
 
