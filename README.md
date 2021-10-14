@@ -93,7 +93,27 @@ I deployed the model using the Machine Learning Studio on an Azure Container Ins
 <img width="608" alt="Screenshot 2021-10-13 150641" src="https://user-images.githubusercontent.com/92030321/137267172-7a6cb074-c84b-4fb1-aeb4-f853d1aad498.png">
 <img width="326" alt="Screenshot 2021-10-13 150810" src="https://user-images.githubusercontent.com/92030321/137267214-7b6ba6bb-2ad7-47a7-8570-09a283add60d.png">
 
+*Screenshot of healthy deployed model*
+
+<img width="607" alt="model_is_deployed" src="https://user-images.githubusercontent.com/92030321/137267499-012ab75f-e9e8-4168-8f76-06834627c16d.png">
+
 #### Enable Logging
+While deploying the model, I did not enable Application Insights. I will now switch on Application Insights and allow logging using the Python SDK.
+First I need a config.json from my workspace. I created one from my workspace variable `ws` using the jupyter notebook
+`ws.write_config(path="./", file_name="config.json")`, then downloaded the file to the same location of my python scripts.
+
+In logs.py I provided the name of my deployed model "automl-bankamrketing" and enabled the Application Insights of my service
+`service.update(enable_app_insights=True)`.
+After running logs.py with python in the terminal, I chekced in Machine Learning Studio and my endpoint had now the application insights enabled.
+
+*Screenshot application insights enabled*
+
+![InkedScreenshot application-insights](https://user-images.githubusercontent.com/92030321/137270162-7b5bf00c-8070-41af-b286-d4e5ecf22e86.jpg)
+
+After the endpoint was again deployed and healthy, I used logs.py to get some logs from my endpoint.
+*Screenshot log output from logs.py*
+![logs_output](https://user-images.githubusercontent.com/92030321/137269516-219a5ec9-6ba8-4351-94a0-c8ea11c0cbf5.png)
+
 #### Swagger documentation
 
 ### Consume Model Endpoint
