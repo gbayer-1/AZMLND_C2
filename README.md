@@ -54,27 +54,6 @@ The primary metric for my models is accuracy. I configured a 3-fold cross valida
 <img width="309" alt="Screenshot 2021-10-13 144345" src="https://user-images.githubusercontent.com/92030321/137181562-34d53cde-1029-400f-b994-86d0f87da4ec.png">
 <img width="557" alt="Screenshot 2021-10-13 144402" src="https://user-images.githubusercontent.com/92030321/137182680-93f99ae0-0ee2-4313-82aa-1c6d3af37c70.png">
 
-The same settings can be done via the SDK using
-```
-automl_settings = {
-    "experiment_timeout_minutes": 20,
-    "max_concurrent_iterations": 5,
-    "primary_metric" : 'accuracy',
-    "n_cross_validations" : 3
-}
-automl_config = AutoMLConfig(compute_target=compute_target, \n
-                             task = "classification",
-                             training_data=dataset,
-                             label_column_name="y",   
-                             path = project_folder,
-                             enable_early_stopping= True,
-                             featurization= 'auto',
-                             debug_log = "automl_errors.log",
-                             model_explainability = True,
-                             **automl_settings
-                            )
- ```
-
 *Screenshot of completed experiment*
 <img width="873" alt="automated_ml_run_completed_2" src="https://user-images.githubusercontent.com/92030321/137180949-a466193c-b714-4ee2-9bb9-05df6e841cb2.png">
 
@@ -144,7 +123,78 @@ endpoint.py also created a data.json, which I used to make a benchmark test usin
 
 In my benchmark run all 10 request where send succesfully and the endpoint reaction time was 219ms (mean).
 ### Create, Publish and Consume a ModelPipeline
-*TODO*: Write a short discription of the key steps. Remeber to include all the screenshots required to demonstrate key steps. 
+I used the provided jupyter notebook to create an AutoMl pipeline. Here I matched the names, so that most of the previous work is reused.
+I reused the previous created "ml-cluster", and also the already registered Bankmarketing dataset.
+I configured the AutoML run in the SDK the same way, I did in the studio.
+
+```
+automl_settings = {
+    "experiment_timeout_minutes": 20,
+    "max_concurrent_iterations": 5,
+    "primary_metric" : 'accuracy',
+    "n_cross_validations" : 3
+}
+automl_config = AutoMLConfig(compute_target=compute_target, \n
+                             task = "classification",
+                             training_data=dataset,
+                             label_column_name="y",   
+                             path = project_folder,
+                             enable_early_stopping= True,
+                             featurization= 'auto',
+                             debug_log = "automl_errors.log",
+                             model_explainability = True,
+                             **automl_settings
+                            )
+ ```
+ 
+ Then I configured the pipeline, that it runs an AutoML experiment and selects the best model out of it. I allowed to reuse the AutoML experiment.
+ ```
+ automl_step = AutoMLStep(
+    name='automl_module',
+    automl_config=automl_config,
+    outputs=[metrics_data, model_data],
+    allow_reuse=True)
+ pipeline = Pipeline(
+    description="pipeline_with_automlstep",
+    workspace=ws,    
+    steps=[automl_step])
+```
+I run the experiment and it completed succesfully.
+```
+pipeline_run = experiment.submit(pipeline)
+```
+
+*Screenshot of the completed pipeline experiment*
+![completed_pipeline_experiment](https://user-images.githubusercontent.com/92030321/137291306-03c9250c-0928-45c5-8199-36a8f777acdc.png)
+
+
+*Screenshot RunDetails Widget of the pipeline*
+![pipeline_run_widget](https://user-images.githubusercontent.com/92030321/137290042-04bebda9-2cfb-469e-b5d4-6d92bcc3e24d.png)
+
+*Screenshot of the Bankmarketing dataset with the AutoML module*
+![pipeline_status_completed](https://user-images.githubusercontent.com/92030321/137290750-60a7d063-c658-41a8-9e3a-37c8f0b666ab.png)
+
+Then I published the pipeline
+![Screenshot 2021-10-14 113528](https://user-images.githubusercontent.com/92030321/137291796-9e0ba8f2-0e13-43e3-bc14-59e5a42871bd.png)
+
+*Screenshot of Published Pipeline overviwe with status ACTIVE*
+![published_pipeline active](https://user-images.githubusercontent.com/92030321/137291939-d199762d-042c-42d7-ae8a-e0d7421ce2b5.png)
+
+After the pipeline endpoint was created I made a post request to the pipeline endpoint and triggered another run.
+```
+rest_endpoint = published_pipeline.endpoint
+response = requests.post(rest_endpoint, 
+                         headers=auth_header, 
+                         json={"ExperimentName": "pipeline-rest-endpoint"}
+                        )
+run_id = response.json().get('Id')
+print('Submitted pipeline run: ', run_id)
+```
+![Screenshot 2021-10-14 114604](https://user-images.githubusercontent.com/92030321/137293598-5093528c-c783-4348-a5f1-c48d592424f6.png)
+
+*Screenshot of triggered Pipeline run*
+![Inkedpipeline is running again_LI](https://user-images.githubusercontent.com/92030321/137293284-d27372a8-dfec-4113-a0e7-00eb8bcf6b12.jpg)
+
 
 ## Screen Recording
 *TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
