@@ -3,7 +3,8 @@
 This project is part of the Udacity Azure ML with Microsoft Azure Nanodegree. In this project, I build an Azure ML run and trained a model on a dataset. I deployed the best model of the AutoML run and interacted with it. Finally I created and deployed a pipeline to train a model using the AutoML run.
 
 ## Architectural Diagram
-*TODO*: Provide an architectual diagram of the project and give an introduction of each step. An architectural diagram is an image that helps visualize the flow of operations from start to finish. In this case, it has to be related to the completed project, with its various stages that are critical to the overall flow. For example, one stage for managing models could be "using Automated ML to determine the best model". 
+This is a graphical overview of the steps of this project: 
+<img width=900 alt="diagramm" src="https://user-images.githubusercontent.com/92030321/137319171-e0315c45-ca93-4f3b-abdd-2637c02d7290.png"> 
 
 ## Key Steps
 ### Authentication
@@ -214,7 +215,7 @@ It shows
 - a working deployed ML model endpoint (timestamp 00:00:10)
 - the deployed pipeline (00:00:55)
 - the available ML model (00:02:13)
-- an succesful API request to the deployed model (00:03:15)
+- an successful API request to the deployed model (00:03:15)
 
 ## Standout Suggestions
 *TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
