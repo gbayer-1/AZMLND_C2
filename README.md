@@ -79,8 +79,20 @@ automl_config = AutoMLConfig(compute_target=compute_target, \n
 <img width="873" alt="automated_ml_run_completed_2" src="https://user-images.githubusercontent.com/92030321/137180949-a466193c-b714-4ee2-9bb9-05df6e841cb2.png">
 
 #### Examine the result of the run
+The best model of the AutoML run is a VotingEnsemble with an accuracy of 0.92. The Voting Ensemble consists of XGBoostClassifiers, LightGBM and Random Forest models with different weights.
+
+<img width="846" alt="Screenshot 2021-10-13 150346" src="https://user-images.githubusercontent.com/92030321/137265560-81baea03-215f-457d-8279-bbb180e803e2.png">
+
+Looking at the confusion matrix, it is apparent, that the model performs very poorly in predicting a positive outcome:
+
+<img width="331" alt="Screenshot 2021-10-13 150553" src="https://user-images.githubusercontent.com/92030321/137265760-d791df38-107d-475f-a109-8285ececaafa.png">
 
 ### Deploy the Best Model
+I deployed the model using the Machine Learning Studio on an Azure Container Instance with enabled authentification with the name "automl-bankmarketing".
+
+<img width="608" alt="Screenshot 2021-10-13 150641" src="https://user-images.githubusercontent.com/92030321/137267172-7a6cb074-c84b-4fb1-aeb4-f853d1aad498.png">
+<img width="326" alt="Screenshot 2021-10-13 150810" src="https://user-images.githubusercontent.com/92030321/137267214-7b6ba6bb-2ad7-47a7-8570-09a283add60d.png">
+
 #### Enable Logging
 #### Swagger documentation
 
