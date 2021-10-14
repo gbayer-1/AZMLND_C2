@@ -115,9 +115,29 @@ After the endpoint was again deployed and healthy, I used logs.py to get some lo
 ![logs_output](https://user-images.githubusercontent.com/92030321/137269516-219a5ec9-6ba8-4351-94a0-c8ea11c0cbf5.png)
 
 #### Swagger documentation
+I downloaded the swagger.json file into the directory of my swagger.sh and serve.py files
+![Screenshot 2021-10-13 154351](https://user-images.githubusercontent.com/92030321/137271228-58534332-c2b8-4902-ab0d-df4793ca8a37.png)
+
+I used port 9001 to run the swagger user interface with swagger.sh and then started a python server with serve.py on port 8000.
+
+*Screenshot of running Swagger UI and HTTP methods*
+![Inkedswagger_running_LI](https://user-images.githubusercontent.com/92030321/137272840-a890d5cb-4180-47a0-9909-b80e1191108e.jpg)
+![Screenshot 2021-10-13 160059](https://user-images.githubusercontent.com/92030321/137271792-cf88d062-ac22-4d39-85b7-1a9c2adc47d1.png)
+![Screenshot 2021-10-13 160122](https://user-images.githubusercontent.com/92030321/137271814-0a0ad6e9-bbf3-4d10-a9cb-3fba49d64e0a.png)
+
+To interact with the deployed endpoint, one can use the score method and provide an input of the shown format ({"data": [{...}]}).
 
 ### Consume Model Endpoint
+Using the information from swagger, I can prepare my endpoint.py script to interact with the deployed model using the python SDK.
+In endpoint.py I provided the endpoint uri, to which my script addresses the request and an authentication key.
 
+![Screenshot 2021-10-13 160243](https://user-images.githubusercontent.com/92030321/137273692-192dfd1b-d6e0-42d2-91be-5d764c9ad66a.png)
+
+I also rearranged the data input to match the example input of the swagger.json. For the two example datasets the model predicts a ["yes", "no"].
+
+![endpointpy_works](https://user-images.githubusercontent.com/92030321/137273897-39c272de-8ee7-4520-b3d1-84814c6a47c2.png)
+
+#### Benchmark
 ### Create, Publish and Consume a ModelPipeline
 *TODO*: Write a short discription of the key steps. Remeber to include all the screenshots required to demonstrate key steps. 
 
