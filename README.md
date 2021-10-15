@@ -1,6 +1,31 @@
 # Project 2: Operationalizing Machine Learning
 
-This project is part of the Udacity Azure ML with Microsoft Azure Nanodegree. In this project, I built an Azure ML run and trained a model on a dataset. I deployed the best model of the AutoML run and interacted with it. Finally I created and deployed a pipeline to train a model using the AutoML run.
+This project is part of the Udacity Azure ML with Microsoft Azure Nanodegree. The main focus of this project is on how to bring a machine learning model into production. In this project, I built an Azure ML run and trained a model on a dataset. I deployed the best model of the AutoML run and interacted with it. Finally I created and deployed a pipeline to train a model using the AutoML run. 
+
+#### 🗂️ About the Data
+The provided dataset contains data about a marketing campaign of a banking institution. I seek to predict whether a customer subscribes to the offered product (colum "y"). The dataset is part of the Azure sample notebook data, the original source of this dataset is:
+
+[Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014
+
+https://archive.ics.uci.edu/ml/datasets/Bank%2BMarketing
+
+#### 🧮 Training the model
+Preparing the dataset, as well as choosing and training the right model with the right parameters for the task is the most time-consuming part of getting a machine learning model into production. The Azure Machine Learning Studio offers a way of automating this process using AutoML. During an AutoML run the system trains different models and scores them against common metrics. The models can be trained parallel on a cluster, which further speeds up this process.
+AutoML also offers an automatic featurization, which deals with common data preprocessing steps like handling missing data or transforming categorical values.
+
+#### 🚀 Deploy and Interact with the model
+Once a model is trained, it needs to be made accessible for the customers. In this project the best model from the AutoML run is deployed as a web service.
+So the model can be consumed by any customer or intermediate service (like a graphical user interface) using http requests and receiving a prediction from the model.
+In this project, I'm going to demonstrate
+- how a customer can reach and authenticate themselve to the REST endpoint of deployed model, 
+- how the request has to be formatted, so the model understands the input as described in the swagger.json
+- how the service provider can monitor the endpoint for disruptions or problems
+- how the service provider can benchmark the endpoint
+
+#### ⛓️ Automation using a pipeline
+The above steps can be automated using a pipeline. For example, if your data source updates regularly, 
+you can create a pipeline, that fetches the new data, runs necessary cleaning and preprocessing steps and automatically trains a new model with the data. You can then schedule this pipeline to run at a certain interval, or even run it with a trigger (like "new data has arrived").
+In this project, I create a simple pipeline, consisting only of the AutoML step and publish this pipeline. I then make an http request to the REST endpoint of this pipeline to trigger another run.
 
 ## Architectural Diagram
 This is a graphical overview of the steps of this project: 
